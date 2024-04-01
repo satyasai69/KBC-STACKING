@@ -741,6 +741,7 @@ export default function Home() {
 
           amount,
         ],
+        value: 0, //BigInt(valueInWei), // Set the value property to send ETH
       });
 
       // Handle success if needed
