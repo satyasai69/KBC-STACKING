@@ -899,14 +899,14 @@ export default function Home() {
           </div>
 
           <button
-            className="w-full bg-[#2d282f] text-[#555057] font-medium text-center p-[10px] rounded-xl mt-7"
+            className="w-full bg-[#3ab0ff] text-[#efefef] font-medium text-center p-[10px] rounded-xl mt-7"
             onClick={handleApprove}
           >
             Approval
           </button>
 
           <button
-            className="w-full bg-[#2d282f] text-[#555057] font-medium text-center p-[10px] rounded-xl mt-7"
+            className="w-full bg-[#3ab0ff] text-[#efefef] font-medium text-center p-[10px] rounded-xl mt-7"
             onClick={handleClick}
           >
             Bridge ETH
