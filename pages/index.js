@@ -903,7 +903,7 @@ export default function Home() {
             className="w-full bg-[#3ab0ff] text-[#efefef] font-medium text-center p-[10px] rounded-xl mt-7"
             onClick={handleClick}
           >
-            Bridge ETH
+            Bridge
           </button>
         </div>
       </div>
