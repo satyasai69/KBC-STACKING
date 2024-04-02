@@ -720,15 +720,43 @@ export default function Home({ sendDataToParent }) {
   const [value, setValue] = useState("");
   const [topname, settopName] = useState("BSC");
   const [downname, setdownName] = useState("ethereum");
-  const [contractaddress, setcontractaddress] = useState(
+  const [connectedNetwork, setConnectedNetwork] = useState(null);
+
+  useEffect(() => {
+    const checkNetwork = async () => {
+      try {
+        if (window.ethereum) {
+          // Wait for the Ethereum provider to be connected
+          await window.ethereum.enable();
+
+          // Access the chainId property for the chain ID
+          const chainId = window.ethereum.chainId;
+          setConnectedNetwork(chainId);
+        }
+      } catch (error) {
+        console.error("Error checking network:", error);
+      }
+    };
+
+    // Initial check on component mount
+    checkNetwork();
+
+    // Set up interval to refresh every 1 second
+    const intervalId = setInterval(checkNetwork, 1000);
+
+    // Clear interval on component unmount
+    return () => clearInterval(intervalId);
+  }, []); // Empty dependency array means it only runs on mount and unmount
+
+  console.log("main", connectedNetwork);
+
+  /*const [contractaddress, setcontractaddress] = useState(
     "0x617c5814f9c52e3768FD233088A01cc6dE25c58A"
   );
-
-  const sendData = () => {
-    const data = topname;
-    // Call the callback function with the data
-    sendDataToParent(data);
-  };
+  const [tokenaddress, settokenaddress] = useState(
+    "0xF6E83df1a9659E9923E43A85aE6d8F07a2C95b61"
+  );
+*/
   //const [isApproved, setIsApproved] = useState(false);
 
   /*useEffect(() => {
@@ -741,11 +769,17 @@ export default function Home({ sendDataToParent }) {
   }, []); */
 
   const handleswapButtonClick = () => {
-    setcontractaddress(
+    /*setcontractaddress(
       contractaddress == "0x617c5814f9c52e3768FD233088A01cc6dE25c58A"
         ? "0xBD933Db03dA178059079590B50b8e2bbE09313b0"
         : "0x617c5814f9c52e3768FD233088A01cc6dE25c58A"
     );
+
+    settokenaddress(
+      tokenaddress === "0xF6E83df1a9659E9923E43A85aE6d8F07a2C95b61"
+        ? "0x563574f776D4537767Caf3E93494028F1CfF3368"
+        : "0xF6E83df1a9659E9923E43A85aE6d8F07a2C95b61"
+    ); */
     // Toggle between 'sai' and 'satya' based on the current state
     settopName(topname === "BSC" ? "ethereum" : "BSC");
     setdownName(downname == "ethereum" ? "BSC" : "ethereum");
@@ -794,7 +828,39 @@ export default function Home({ sendDataToParent }) {
 
       await writeContract({
         abi,
-        address: contractaddress, //  "0x617c5814f9c52e3768FD233088A01cc6dE25c58A",
+        address: "0xBD933Db03dA178059079590B50b8e2bbE09313b0",
+        functionName: "lockTokens",
+        args: [BigInt(weiAmount)], //[ BigInt(value * 18)],
+        value: 0, //BigInt(valueInWei), // Set the value property to send ETH
+      });
+      //console.log("Number of addresses:", recipients.length);
+      //const totalamount =  amount * recipients.length;
+      console.log(BigInt(value * 10 ** decimals));
+
+      //console.log(isPending ? "Confirming..." : "Mint");
+      console.log(" successful!");
+      //await transferform();
+    } catch (error) {
+      console.error("Error during approval:", error);
+    }
+  };
+
+  const handleClick2 = async () => {
+    /*const recipientsArray = recipientsText
+      .split("\n")
+      .map((address) => address.trim())
+      .filter((address) => address !== ""); */
+
+    //console.log(recipientsArray)
+    //console.log("Number of addresses:", recipients.length);
+
+    try {
+      const decimals = 18;
+      //const valueInWei = Math.round(ethValue * 1e18); // Convert amount to Wei
+
+      await writeContract({
+        abi,
+        address: "0x617c5814f9c52e3768FD233088A01cc6dE25c58A",
         functionName: "lockTokens",
         args: [BigInt(weiAmount)], //[ BigInt(value * 18)],
         value: 0, //BigInt(valueInWei), // Set the value property to send ETH
@@ -858,7 +924,7 @@ export default function Home({ sendDataToParent }) {
           </div>
         </div>
 
-        <div className="flex justify-center items-center" onClick={sendData}>
+        <div className="flex justify-center items-center">
           <button onClick={handleswapButtonClick}>
             {" "}
             <img
@@ -935,7 +1001,9 @@ export default function Home({ sendDataToParent }) {
 
           <button
             className="w-full bg-[#3ab0ff] text-[#efefef] font-medium text-center p-[10px] rounded-xl mt-7"
-            onClick={handleClick}
+            onClick={
+              connectedNetwork === "0xaa36a7" ? handleClick : handleClick2
+            }
           >
             Bridge
           </button>
