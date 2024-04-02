@@ -2,7 +2,8 @@ import Image from "next/image";
 import { Inter } from "next/font/google";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { BiSolidDownArrow } from "react-icons/bi";
-import Logo from "./Logo.svg";
+import Logo from "../public/Logo.svg";
+
 import React, { useState, useEffect } from "react";
 import { useWaitForTransactionReceipt, useWriteContract } from "wagmi";
 import Web3 from "web3";
@@ -713,10 +714,21 @@ async function checkAllowance() {
   return allowance; */
 }
 
-export default function Home() {
+export default function Home({ sendDataToParent }) {
   // const Tokenabi = require("../ABI/tokenABI.json");
   const { writeContract, isPending, isSuccess } = useWriteContract();
   const [value, setValue] = useState("");
+  const [topname, settopName] = useState("BSC");
+  const [downname, setdownName] = useState("ethereum");
+  const [contractaddress, setcontractaddress] = useState(
+    "0x617c5814f9c52e3768FD233088A01cc6dE25c58A"
+  );
+
+  const sendData = () => {
+    const data = topname;
+    // Call the callback function with the data
+    sendDataToParent(data);
+  };
   //const [isApproved, setIsApproved] = useState(false);
 
   /*useEffect(() => {
@@ -727,6 +739,17 @@ export default function Home() {
 
     fetchData();
   }, []); */
+
+  const handleswapButtonClick = () => {
+    setcontractaddress(
+      contractaddress == "0x617c5814f9c52e3768FD233088A01cc6dE25c58A"
+        ? "0xBD933Db03dA178059079590B50b8e2bbE09313b0"
+        : "0x617c5814f9c52e3768FD233088A01cc6dE25c58A"
+    );
+    // Toggle between 'sai' and 'satya' based on the current state
+    settopName(topname === "BSC" ? "ethereum" : "BSC");
+    setdownName(downname == "ethereum" ? "BSC" : "ethereum");
+  };
 
   const handleApprove = async () => {
     try {
@@ -771,7 +794,7 @@ export default function Home() {
 
       await writeContract({
         abi,
-        address: "0x617c5814f9c52e3768FD233088A01cc6dE25c58A", //"0xbe8a2312082F2cB92571F35c6914565E6830c58e",
+        address: contractaddress, //  "0x617c5814f9c52e3768FD233088A01cc6dE25c58A",
         functionName: "lockTokens",
         args: [BigInt(weiAmount)], //[ BigInt(value * 18)],
         value: 0, //BigInt(valueInWei), // Set the value property to send ETH
@@ -795,13 +818,13 @@ export default function Home() {
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-4">
               <div className="w-10 h-10 rounded-full p-1 bg-[#212325] flex justify-center items-center">
-                <img src={Logo} alt="ethereum" className="h-7" />
+                <img src={Logo} alt="" className="h-7" />
               </div>
 
               <div>
                 <span className="text-[#bab6bc] font-normal text-sm">From</span>
                 <div className="text-[#ebefe9] flex gap-4 cursor-pointer">
-                  <p>USDT BSC</p>
+                  <p>{topname}</p>
                   <BiSolidDownArrow className="text-xs" />
                 </div>
               </div>
@@ -815,7 +838,7 @@ export default function Home() {
           <div className="border rounded p-2 border-[#4d484f] mt-5 flex gap-3">
             <div className="w-32 rounded p-2 bg-[#565158] h-12 flex items-center gap-3 relative">
               <div className="w-7 h-7 rounded-full p-1 bg-[#212325] flex justify-center items-center">
-                <img src={Logo} alt="ethereum" className="h-4" />
+                <img src={Logo} alt="" className="h-4" />
               </div>
 
               <div className="flex-1">
@@ -835,14 +858,25 @@ export default function Home() {
           </div>
         </div>
 
+        <div className="flex justify-center items-center" onClick={sendData}>
+          <button onClick={handleswapButtonClick}>
+            {" "}
+            <img
+              src="data:image/svg+xml;base64,PHN2ZyBpZD0iU3ZnanNTdmcxMDI2IiB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4bWxuczpzdmdqcz0iaHR0cDovL3N2Z2pzLmNvbS9zdmdqcyI+PGRlZnMgaWQ9IlN2Z2pzRGVmczEwMjciPjwvZGVmcz48ZyBpZD0iU3ZnanNHMTAyOCI+PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDMyIDMyIiB2aWV3Qm94PSIwIDAgMzIgMzIiIHdpZHRoPSIyNTYiIGhlaWdodD0iMjU2Ij48cGF0aCBkPSJNMTQgMi4yNTZWMzBjLTIuMjA5IDAtNC0xLjc5MS00LTRWMTNINC43MTRjLS42MzMgMC0uOTQ5LS43NjUtLjUwMi0xLjIxMmw5LjYwNy05LjYwN0MxMy44ODYgMi4xMTQgMTQgMi4xNjIgMTQgMi4yNTZ6TTI3Ljc4OCAyMC4yMTJsLTkuNiA5LjZDMTguMTE4IDI5Ljg4MiAxOCAyOS44MzIgMTggMjkuNzM0VjJjMi4yMDkgMCA0IDEuNzkxIDQgNHYxM2g1LjI4NkMyNy45MTggMTkgMjguMjM1IDE5Ljc2NSAyNy43ODggMjAuMjEyeiIgZmlsbD0iIzM0YTg1MyIgY2xhc3M9ImNvbG9yMDAwIHN2Z1NoYXBlIj48L3BhdGg+PC9zdmc+PC9nPjwvc3ZnPg=="
+              alt=""
+              className="h-6"
+            />
+          </button>
+        </div>
+
         <div className="bg-[#353037] rounded-lg p-3 my-5">
           <div className="flex items-center gap-4">
-            <img src={Logo} alt="ethereum" className="h-6" />
+            <img src={Logo} alt="" className="h-6" />
 
             <div>
               <span className="text-[#bab6bc] font-normal text-sm">To</span>
               <div className="text-[#ebefe9] flex gap-4 cursor-pointer">
-                <p>Arbitrum</p>
+                <p>{downname}</p>
                 <BiSolidDownArrow className="text-xs" />
               </div>
             </div>
@@ -851,12 +885,12 @@ export default function Home() {
           <div className="border rounded p-2 border-[#4d484f] mt-5 flex gap-3">
             <div className="w-32 rounded p-2 bg-[#565158] h-12 flex items-center gap-3 relative">
               <div className="w-7 h-7 rounded-full p-1 bg-[#212325] flex justify-center items-center">
-                <img src={Logo} alt="ethereum" className="h-4" />
+                <img src={Logo} alt="" className="h-4" />
               </div>
 
               <div className="flex-1">
                 <div className="text-[#ebefe9] flex gap-4 cursor-pointer">
-                  <p>Arb</p>
+                  <p>USDT</p>
                   <BiSolidDownArrow className="text-xs" />
                 </div>
               </div>
