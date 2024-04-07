@@ -828,7 +828,7 @@ export default function Home({ sendDataToParent }) {
 
       await writeContract({
         abi,
-        address: "0xBD933Db03dA178059079590B50b8e2bbE09313b0",
+        address: "0x9A9bc340103C462365Db54E423f95784C664d3Df",// "0xBD933Db03dA178059079590B50b8e2bbE09313b0",
         functionName: "lockTokens",
         args: [BigInt(weiAmount)], //[ BigInt(value * 18)],
         value: 0, //BigInt(valueInWei), // Set the value property to send ETH
@@ -860,7 +860,7 @@ export default function Home({ sendDataToParent }) {
 
       await writeContract({
         abi,
-        address: "0x617c5814f9c52e3768FD233088A01cc6dE25c58A",
+        address: "0xC5052054DBDC35f84D279CB321bE98480d807f6F",// "0x617c5814f9c52e3768FD233088A01cc6dE25c58A",
         functionName: "lockTokens",
         args: [BigInt(weiAmount)], //[ BigInt(value * 18)],
         value: 0, //BigInt(valueInWei), // Set the value property to send ETH
@@ -1002,7 +1002,7 @@ export default function Home({ sendDataToParent }) {
           <button
             className="w-full bg-[#3ab0ff] text-[#efefef] font-medium text-center p-[10px] rounded-xl mt-7"
             onClick={
-              connectedNetwork === "0xaa36a7" ? handleClick : handleClick2
+              connectedNetwork === "0x2af8" ? handleClick : handleClick2
             }
           >
             Bridge
