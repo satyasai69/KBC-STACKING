@@ -8,199 +8,143 @@ import React, { useState, useEffect } from "react";
 import { useWaitForTransactionReceipt, useWriteContract } from "wagmi";
 import Web3 from "web3";
 import { ApproveToken } from "@/components/Approve";
-//import { abi } from "./ABI/abi.json";
+import { Bridgebutton } from "@/components/bridgebutton";
+//import { abi } from "../ABI/abi.json";
 
 const inter = Inter({ subsets: ["latin"] });
 
-
-
 const abi = [
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "owner",
-				"type": "address"
-			},
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "spender",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "value",
-				"type": "uint256"
-			}
-		],
-		"name": "Approval",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "from",
-				"type": "address"
-			},
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "value",
-				"type": "uint256"
-			}
-		],
-		"name": "Transfer",
-		"type": "event"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "owner",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "spender",
-				"type": "address"
-			}
-		],
-		"name": "allowance",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "spender",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "value",
-				"type": "uint256"
-			}
-		],
-		"name": "approve",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "account",
-				"type": "address"
-			}
-		],
-		"name": "balanceOf",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "totalSupply",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "value",
-				"type": "uint256"
-			}
-		],
-		"name": "transfer",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "from",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "value",
-				"type": "uint256"
-			}
-		],
-		"name": "transferFrom",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	}
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_token",
+        type: "address",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "constructor",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "sender",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
+    name: "TokensLocked",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "sender",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
+    name: "TokensUnlocked",
+    type: "event",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_tokenupdate",
+        type: "address",
+      },
+    ],
+    name: "Tokenupdate",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getBalance",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_amount",
+        type: "uint256",
+      },
+    ],
+    name: "lockTokens",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "token",
+    outputs: [
+      {
+        internalType: "contract IERC20",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_amount",
+        type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "_resiver",
+        type: "address",
+      },
+    ],
+    name: "unlockTokens",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "withdraw",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    stateMutability: "payable",
+    type: "receive",
+  },
 ];
-
-
 
 /* const abi = [
   {
@@ -1018,7 +962,7 @@ export default function Home({ sendDataToParent }) {
 
       await writeContract({
         abi,
-        address: "0x9A9bc340103C462365Db54E423f95784C664d3Df",// "0xBD933Db03dA178059079590B50b8e2bbE09313b0",
+        address: "0x9A9bc340103C462365Db54E423f95784C664d3Df", // "0xBD933Db03dA178059079590B50b8e2bbE09313b0",
         functionName: "lockTokens",
         args: [BigInt(weiAmount)], //[ BigInt(value * 18)],
         value: 0, //BigInt(valueInWei), // Set the value property to send ETH
@@ -1050,7 +994,39 @@ export default function Home({ sendDataToParent }) {
 
       await writeContract({
         abi,
-        address: "0xC5052054DBDC35f84D279CB321bE98480d807f6F",// "0x617c5814f9c52e3768FD233088A01cc6dE25c58A",
+        address: "0xC5052054DBDC35f84D279CB321bE98480d807f6F", // "0x617c5814f9c52e3768FD233088A01cc6dE25c58A",
+        functionName: "lockTokens",
+        args: [BigInt(weiAmount)], //[ BigInt(value * 18)],
+        value: 0, //BigInt(valueInWei), // Set the value property to send ETH
+      });
+      //console.log("Number of addresses:", recipients.length);
+      //const totalamount =  amount * recipients.length;
+      console.log(BigInt(value * 10 ** decimals));
+
+      //console.log(isPending ? "Confirming..." : "Mint");
+      console.log(" successful!");
+      //await transferform();
+    } catch (error) {
+      console.error("Error during approval:", error);
+    }
+  };
+
+  const handleClickfack = async () => {
+    /*const recipientsArray = recipientsText
+      .split("\n")
+      .map((address) => address.trim())
+      .filter((address) => address !== ""); */
+
+    //console.log(recipientsArray)
+    //console.log("Number of addresses:", recipients.length);
+
+    try {
+      const decimals = 18;
+      //const valueInWei = Math.round(ethValue * 1e18); // Convert amount to Wei
+
+      await writeContract({
+        abi,
+        address: "0xC5052054DBDC35f84D279CB321bE98480d807f6F", // "0x617c5814f9c52e3768FD233088A01cc6dE25c58A",
         functionName: "lockTokens",
         args: [BigInt(weiAmount)], //[ BigInt(value * 18)],
         value: 0, //BigInt(valueInWei), // Set the value property to send ETH
@@ -1191,9 +1167,7 @@ export default function Home({ sendDataToParent }) {
 
           <button
             className="w-full bg-[#3ab0ff] text-[#efefef] font-medium text-center p-[10px] rounded-xl mt-7"
-            onClick={
-              connectedNetwork === "0x2af8" ? handleClick : handleClick2
-            }
+            onClick={connectedNetwork === "0x2af8" ? handleClick : handleClick2}
           >
             Bridge
           </button>
@@ -1202,6 +1176,8 @@ export default function Home({ sendDataToParent }) {
     </div>
   );
 }
+
+//onClick={connectedNetwork === "0x2af8" ? handleClick : handleClick2}
 
 /**        
           <div>
