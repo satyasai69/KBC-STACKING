@@ -16,7 +16,7 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
 
 const kbcfoundation = {
-  id: 43114,
+  id: 11000,
   name: "kbcfoundation",
   iconUrl: "https://kbcfoundation.com/images/logo.png",
   iconBackground: "#fff",
