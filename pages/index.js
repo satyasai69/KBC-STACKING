@@ -9,6 +9,7 @@ import { useWaitForTransactionReceipt, useWriteContract } from "wagmi";
 import Web3 from "web3";
 import { ApproveToken } from "@/components/Approve";
 import { Bridgebutton } from "@/components/bridgebutton";
+import usdt from "../public/usdt.png";
 //import { abi } from "../ABI/abi.json";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -850,10 +851,15 @@ async function checkAllowance() {
 
 export default function Home({ sendDataToParent }) {
   // const Tokenabi = require("../ABI/tokenABI.json");
-  const { writeContract, isPending, isSuccess } = useWriteContract();
+  const {
+    data: hash,
+    writeContract,
+    isPending,
+    isSuccess,
+  } = useWriteContract();
   const [value, setValue] = useState("");
   const [topname, settopName] = useState("BSC");
-  const [downname, setdownName] = useState("ethereum");
+  const [downname, setdownName] = useState("KDC");
   const [connectedNetwork, setConnectedNetwork] = useState(null);
 
   useEffect(() => {
@@ -915,8 +921,8 @@ export default function Home({ sendDataToParent }) {
         : "0xF6E83df1a9659E9923E43A85aE6d8F07a2C95b61"
     ); */
     // Toggle between 'sai' and 'satya' based on the current state
-    settopName(topname === "BSC" ? "ethereum" : "BSC");
-    setdownName(downname == "ethereum" ? "BSC" : "ethereum");
+    settopName(topname === "BSC" ? "KDC" : "BSC");
+    setdownName(downname == "KDC" ? "BSC" : "KDC");
   };
 
   const handleApprove = async () => {
@@ -1043,141 +1049,157 @@ export default function Home({ sendDataToParent }) {
     }
   };
 
+  //  logo === 1055 <div className="w-10 h-10 rounded-full p-1 bg-[#212325] flex justify-center items-center"></div>
+
   return (
-    <div className="bg-[#17161b] h-screen flex justify-center items-center py-10 px-4">
-      <div className="bg-[#252027] rounded-xl p-4 max-w-3xl w-full mx-auto">
-        <div className="bg-[#353037] rounded-lg p-3">
-          <div className="flex justify-between items-center">
+    <main>
+      <div className="bg-[#17161b] h-screen flex justify-center items-center py-10 px-4">
+        <div className="bg-[#252027] rounded-xl p-4 max-w-3xl w-full mx-auto">
+          <div className="bg-[#353037] rounded-lg p-3">
+            <div className="flex justify-between items-center">
+              <div className="flex items-center gap-4">
+                <div>
+                  <span className="text-[#bab6bc] font-normal text-sm">
+                    From
+                  </span>
+                  <div className="text-[#ebefe9] flex gap-4 cursor-pointer">
+                    <p>{topname}</p>
+                    <BiSolidDownArrow className="text-xs" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="text-[#f0e9fc] text-base">
+                <ConnectButton />
+              </div>
+            </div>
+
+            <div className="border rounded p-2 border-[#4d484f] mt-5 flex gap-3">
+              <div className="w-32 rounded p-2 bg-[#565158] h-12 flex items-center gap-3 relative">
+                <div className="w-7 h-7 rounded-full p-1 bg-[#212325] flex justify-center items-center">
+                  <Image
+                    src={"/usdt.png"}
+                    alt="Example Image"
+                    width={500}
+                    height={300}
+                  />
+                </div>
+
+                <div className="flex-1">
+                  <div className="text-[#ebefe9] flex gap-4 cursor-pointer">
+                    <p>USDT</p>
+                    <BiSolidDownArrow className="text-xs" />
+                  </div>
+                </div>
+              </div>
+              <input
+                type="text"
+                placeholder="0.00000"
+                className="bg-transparent flex-1 outline-none border-none text-base text-[#ebefe9]"
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div className="flex justify-center items-center">
+            <button onClick={handleswapButtonClick}>
+              {" "}
+              <Image
+                src="data:image/svg+xml;base64,PHN2ZyBpZD0iU3ZnanNTdmcxMDI2IiB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4bWxuczpzdmdqcz0iaHR0cDovL3N2Z2pzLmNvbS9zdmdqcyI+PGRlZnMgaWQ9IlN2Z2pzRGVmczEwMjciPjwvZGVmcz48ZyBpZD0iU3ZnanNHMTAyOCI+PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDMyIDMyIiB2aWV3Qm94PSIwIDAgMzIgMzIiIHdpZHRoPSIyNTYiIGhlaWdodD0iMjU2Ij48cGF0aCBkPSJNMTQgMi4yNTZWMzBjLTIuMjA5IDAtNC0xLjc5MS00LTRWMTNINC43MTRjLS42MzMgMC0uOTQ5LS43NjUtLjUwMi0xLjIxMmw5LjYwNy05LjYwN0MxMy44ODYgMi4xMTQgMTQgMi4xNjIgMTQgMi4yNTZ6TTI3Ljc4OCAyMC4yMTJsLTkuNiA5LjZDMTguMTE4IDI5Ljg4MiAxOCAyOS44MzIgMTggMjkuNzM0VjJjMi4yMDkgMCA0IDEuNzkxIDQgNHYxM2g1LjI4NkMyNy45MTggMTkgMjguMjM1IDE5Ljc2NSAyNy43ODggMjAuMjEyeiIgZmlsbD0iIzM0YTg1MyIgY2xhc3M9ImNvbG9yMDAwIHN2Z1NoYXBlIj48L3BhdGg+PC9zdmc+PC9nPjwvc3ZnPg=="
+                alt="Example Image"
+                width={50}
+                height={30}
+              />
+            </button>
+          </div>
+
+          <div className="bg-[#353037] rounded-lg p-3 my-5">
             <div className="flex items-center gap-4">
-              <div className="w-10 h-10 rounded-full p-1 bg-[#212325] flex justify-center items-center">
-                <img src={Logo} alt="" className="h-7" />
-              </div>
-
               <div>
-                <span className="text-[#bab6bc] font-normal text-sm">From</span>
+                <span className="text-[#bab6bc] font-normal text-sm">To</span>
                 <div className="text-[#ebefe9] flex gap-4 cursor-pointer">
-                  <p>{topname}</p>
+                  <p>{downname}</p>
                   <BiSolidDownArrow className="text-xs" />
                 </div>
               </div>
             </div>
 
-            <div className="text-[#f0e9fc] text-base">
-              <ConnectButton />
-            </div>
-          </div>
+            <div className="border rounded p-2 border-[#4d484f] mt-5 flex gap-3">
+              <div className="w-32 rounded p-2 bg-[#565158] h-12 flex items-center gap-3 relative">
+                <div className="w-7 h-7 rounded-full p-1 bg-[#212325] flex justify-center items-center">
+                  <Image
+                    src={"/usdt.png"}
+                    alt="Example Image"
+                    width={50}
+                    height={30}
+                  />
+                </div>
 
-          <div className="border rounded p-2 border-[#4d484f] mt-5 flex gap-3">
-            <div className="w-32 rounded p-2 bg-[#565158] h-12 flex items-center gap-3 relative">
-              <div className="w-7 h-7 rounded-full p-1 bg-[#212325] flex justify-center items-center">
-                <img src={Logo} alt="" className="h-4" />
-              </div>
-
-              <div className="flex-1">
-                <div className="text-[#ebefe9] flex gap-4 cursor-pointer">
-                  <p>USDT</p>
-                  <BiSolidDownArrow className="text-xs" />
+                <div className="flex-1">
+                  <div className="text-[#ebefe9] flex gap-4 cursor-pointer">
+                    <p>USDT</p>
+                    <BiSolidDownArrow className="text-xs" />
+                  </div>
                 </div>
               </div>
-            </div>
-            <input
-              type="text"
-              placeholder="0.00000"
-              className="bg-transparent flex-1 outline-none border-none text-base text-[#ebefe9]"
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-            />
-          </div>
-        </div>
-
-        <div className="flex justify-center items-center">
-          <button onClick={handleswapButtonClick}>
-            {" "}
-            <img
-              src="data:image/svg+xml;base64,PHN2ZyBpZD0iU3ZnanNTdmcxMDI2IiB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4bWxuczpzdmdqcz0iaHR0cDovL3N2Z2pzLmNvbS9zdmdqcyI+PGRlZnMgaWQ9IlN2Z2pzRGVmczEwMjciPjwvZGVmcz48ZyBpZD0iU3ZnanNHMTAyOCI+PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDMyIDMyIiB2aWV3Qm94PSIwIDAgMzIgMzIiIHdpZHRoPSIyNTYiIGhlaWdodD0iMjU2Ij48cGF0aCBkPSJNMTQgMi4yNTZWMzBjLTIuMjA5IDAtNC0xLjc5MS00LTRWMTNINC43MTRjLS42MzMgMC0uOTQ5LS43NjUtLjUwMi0xLjIxMmw5LjYwNy05LjYwN0MxMy44ODYgMi4xMTQgMTQgMi4xNjIgMTQgMi4yNTZ6TTI3Ljc4OCAyMC4yMTJsLTkuNiA5LjZDMTguMTE4IDI5Ljg4MiAxOCAyOS44MzIgMTggMjkuNzM0VjJjMi4yMDkgMCA0IDEuNzkxIDQgNHYxM2g1LjI4NkMyNy45MTggMTkgMjguMjM1IDE5Ljc2NSAyNy43ODggMjAuMjEyeiIgZmlsbD0iIzM0YTg1MyIgY2xhc3M9ImNvbG9yMDAwIHN2Z1NoYXBlIj48L3BhdGg+PC9zdmc+PC9nPjwvc3ZnPg=="
-              alt=""
-              className="h-6"
-            />
-          </button>
-        </div>
-
-        <div className="bg-[#353037] rounded-lg p-3 my-5">
-          <div className="flex items-center gap-4">
-            <img src={Logo} alt="" className="h-6" />
-
-            <div>
-              <span className="text-[#bab6bc] font-normal text-sm">To</span>
-              <div className="text-[#ebefe9] flex gap-4 cursor-pointer">
-                <p>{downname}</p>
-                <BiSolidDownArrow className="text-xs" />
-              </div>
+              <input
+                type="text"
+                placeholder="0.00000"
+                className="bg-transparent flex-1 outline-none border-none text-base text-[#ebefe9]"
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+              />
             </div>
           </div>
 
-          <div className="border rounded p-2 border-[#4d484f] mt-5 flex gap-3">
-            <div className="w-32 rounded p-2 bg-[#565158] h-12 flex items-center gap-3 relative">
-              <div className="w-7 h-7 rounded-full p-1 bg-[#212325] flex justify-center items-center">
-                <img src={Logo} alt="" className="h-4" />
-              </div>
-
-              <div className="flex-1">
-                <div className="text-[#ebefe9] flex gap-4 cursor-pointer">
-                  <p>USDT</p>
-                  <BiSolidDownArrow className="text-xs" />
-                </div>
-              </div>
-            </div>
-            <input
-              type="text"
-              placeholder="0.00000"
-              className="bg-transparent flex-1 outline-none border-none text-base text-[#ebefe9]"
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-            />
-          </div>
-        </div>
-
-        <div>
-          {/* <p className="text-[#78737b] text-base font-medium">
+          <div>
+            {/* <p className="text-[#78737b] text-base font-medium">
             Will also receive .0003 <span className="text-[#fcfafd]">ETH</span>{" "}
             ($0..49)
           </p> */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3 mt-2">
-              <p className="text-[#78737b] text-base font-medium">
-                Expected Price on
-              </p>
-              <img src={Logo} alt="" className="h-5" />
-              <span className="text-[#fcfafd] text-base font-medium">
-                Aribiturm
-              </span>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3 mt-2">
+                <p className="text-[#78737b] text-base font-medium">
+                  Expected Price on
+                </p>
+
+                <span className="text-[#fcfafd] text-base font-medium">
+                  KDC
+                </span>
+              </div>
+              <div>
+                <span className="text-[#78737b] text-base font-medium">1 </span>
+                <span className="text-[#fcfafd] text-base font-medium">
+                  USDT
+                </span>
+              </div>
             </div>
-            <div>
-              <span className="text-[#78737b] text-base font-medium">0.0 </span>
-              <span className="text-[#fcfafd] text-base font-medium">USDT</span>
+
+            <div className="text-[#78737b] text-base font-medium flex justify-between items-center mt-2">
+              Slippage
+              <span>-</span>
             </div>
+
+            <ApproveToken weiAmount={weiAmount} />
+
+            <button
+              className="w-full bg-[#3ab0ff] text-[#efefef] font-medium text-center p-[10px] rounded-xl mt-7"
+              onClick={
+                connectedNetwork === "0x2af8" ? handleClick : handleClick2
+              }
+            >
+              Bridge
+            </button>
+            {isSuccess && <div>{hash}</div>}
           </div>
-
-          <div className="text-[#78737b] text-base font-medium flex justify-between items-center mt-2">
-            Slippage
-            <span>-</span>
-          </div>
-
-          <ApproveToken weiAmount={weiAmount} />
-
-          <button
-            className="w-full bg-[#3ab0ff] text-[#efefef] font-medium text-center p-[10px] rounded-xl mt-7"
-            onClick={connectedNetwork === "0x2af8" ? handleClick : handleClick2}
-          >
-            Bridge
-          </button>
         </div>
       </div>
-    </div>
+    </main>
   );
 }
 
-//onClick={connectedNetwork === "0x2af8" ? handleClick : handleClick2}
+// onClick={connectedNetwork === "0x2af8" ? handleClick : handleClick2}
 
 /**        
           <div>
@@ -1197,4 +1219,4 @@ export default function Home({ sendDataToParent }) {
                     Approval
                 </button>
             )}
-        </div> */
+        </div>  */

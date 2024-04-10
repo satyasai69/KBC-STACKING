@@ -139,7 +139,7 @@ const abi = [
   },
 ];
 
-export function Bridgebutton() {
+export function Bridgebutton(value) {
   const [connectedNetwork, setConnectedNetwork] = useState(null);
   //const [networkName, setNetworkName] = useState("");
   //const [tokenaddress, settokenaddress] = useState();
@@ -150,10 +150,26 @@ export function Bridgebutton() {
     isSuccess,
   } = useWriteContract();
 
+  // Multiply the token amount by the multiplier to get the amount in Wei
+  //const weiAmount = BigInt(value) * BigInt(multiplier);
+
+  const obj = {
+    toString: function () {
+      return value; // Example numerical value as string
+    },
+  };
+
+  const number = parseFloat(obj.toString());
+
   // Calculate the multiplier based on the number of decimals
   const multiplier = 10 ** 18;
-  const weiAmount = 100;
 
+  // Multiply the token amount by the multiplier to get the amount in Wei
+  //const weiAmount = BigInt(number) * BigInt(multiplier);
+  //onsole.log(weiAmount, "s");
+
+  // Multiply the token amount by the multiplier to get the amount in Wei
+  //const weiAmount = BigInt(value) * BigInt(multiplier);
   // Multiply the token amount by the multiplier to get the amount in Wei
 
   const handleClick = async () => {
@@ -173,18 +189,19 @@ export function Bridgebutton() {
         abi,
         address: "0x9A9bc340103C462365Db54E423f95784C664d3Df", // "0xBD933Db03dA178059079590B50b8e2bbE09313b0",
         functionName: "lockTokens",
-        args: [BigInt(weiAmount)], //[ BigInt(value * 18)],
+        args: [BigInt(value.weiAmount)], //[ BigInt(value * 18)],
         value: 0, //BigInt(valueInWei), // Set the value property to send ETH
       });
       //console.log("Number of addresses:", recipients.length);
       //const totalamount =  amount * recipients.length;
-      console.log(BigInt(value * 10 ** decimals));
+      //console.log(BigInt(value * 10 ** decimals));
 
       //console.log(isPending ? "Confirming..." : "Mint");
       console.log(" successful!");
       //await transferform();
     } catch (error) {
-      console.error("Error during approval:", error);
+      console.error("Error during bridge:", error);
+      console.log(value);
     }
   };
 
@@ -301,9 +318,9 @@ export function Bridgebutton() {
   return (
     <button
       className="w-full bg-[#3ab0ff] text-[#efefef] font-medium text-center p-[10px] rounded-xl mt-7"
-      onClick={handleClickfack}
+      onClick={connectedNetwork === "0x2af8" ? handleClick : handleClick2}
     >
-      bridge
+      Bridge
     </button>
   );
 }

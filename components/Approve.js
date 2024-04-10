@@ -5,6 +5,7 @@ import {
 } from "wagmi";
 import { abi } from "../approveABI/abi.json";
 import { useState, useEffect } from "react";
+import { Bridgebutton } from "@/components/bridgebutton";
 
 export function ApproveToken(weiAmount) {
   const [connectedNetwork, setConnectedNetwork] = useState(null);
@@ -109,12 +110,19 @@ export function ApproveToken(weiAmount) {
     }
   }, [connectedNetwork]); // Run this effect whenever connectedNetwork changes  */
 
+  // Calculate the multiplier based on the number of decimals
+
   return (
-    <button
-      className="w-full bg-[#3ab0ff] text-[#efefef] font-medium text-center p-[10px] rounded-xl mt-7"
-      onClick={connectedNetwork === "0x2af8" ? handleApprove : handleApprove2}
-    >
-      Approval
-    </button>
+    <div>
+      <button
+        className="w-full bg-[#3ab0ff] text-[#efefef] font-medium text-center p-[10px] rounded-xl mt-7"
+        onClick={connectedNetwork === "0x2af8" ? handleApprove : handleApprove2}
+      >
+        Approval
+      </button>
+      {isSuccess && <div>{hash}</div>}
+    </div>
   );
 }
+
+//weiAmount={weiAmount}
