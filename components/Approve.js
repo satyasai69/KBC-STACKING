@@ -2,13 +2,46 @@ import {
   useWaitForTransactionReceipt,
   useWriteContract,
   useSendTransaction,
+  useReadContract,
 } from "wagmi";
+import { useConnect, useAccount } from "wagmi";
 import { abi } from "../approveABI/abi.json";
 import { useState, useEffect } from "react";
 import { Bridgebutton } from "@/components/bridgebutton";
 
 export function ApproveToken(weiAmount) {
+  const { connect, connectors } = useConnect();
+  const { address } = useAccount();
   const [connectedNetwork, setConnectedNetwork] = useState(null);
+  const [approvalStatus, setApprovalStatus] = useState(false);
+
+  const result = useReadContract({
+    abi,
+    address: "0x55d398326f99059fF775485246999027B3197955",
+    functionName: "allowance",
+    args: [
+      address, // "0x2373a942FEbC0ee428b266bDD58275794E7f1553",
+      "0xC5052054DBDC35f84D279CB321bE98480d807f6F",
+    ],
+  });
+  result.data;
+
+  // console.log(address);
+  // console.log(result.data, "data");
+
+  useEffect(() => {
+    // Check approval status here and update approvalStatus state accordingly
+    // You can use Web3.js or ethers.js to check the approval status
+    // For demonstration purposes, let's assume approvalStatus is a boolean value
+    if (result.data > 0) {
+      setApprovalStatus(false);
+    } else {
+      setApprovalStatus(true);
+    }
+
+    //  const isApproved = true; // Example approval status
+    // setApprovalStatus(isApproved);
+  }, [result]);
   //const [networkName, setNetworkName] = useState("");
   //const [tokenaddress, settokenaddress] = useState();
   const {
@@ -26,7 +59,7 @@ export function ApproveToken(weiAmount) {
         address: "0xd8Be685E1868B4BAC6FE9D4dB8b6fDaA66CDc7f9", // "0x563574f776D4537767Caf3E93494028F1CfF3368", //"0x563574f776D4537767Caf3E93494028F1CfF3368", // "0xF6E83df1a9659E9923E43A85aE6d8F07a2C95b61", // `0x${tokenaddress}`, //tokenAddress,//"0x9b2cbE8Ad90fAB7362C6eC5A4896C7629CAe3D16", //token address
         functionName: "approve",
         args: [
-          "0x9A9bc340103C462365Db54E423f95784C664d3Df", // contract address
+          "0xC5052054DBDC35f84D279CB321bE98480d807f6F", // contract address
 
           approveAmount, //BigInt(weiAmount),
         ],
@@ -114,15 +147,28 @@ export function ApproveToken(weiAmount) {
 
   return (
     <div>
-      <button
-        className="w-full bg-[#3ab0ff] text-[#efefef] font-medium text-center p-[10px] rounded-xl mt-7"
-        onClick={connectedNetwork === "0x2af8" ? handleApprove : handleApprove2}
-      >
-        Approval
-      </button>
-      {isSuccess && <div>{hash}</div>}
+      {approvalStatus ? (
+        <button
+          className="w-full bg-[#3ab0ff] text-[#efefef] font-medium text-center p-[10px] rounded-xl mt-7"
+          onClick={
+            connectedNetwork === "0x2af8" ? handleApprove : handleApprove2
+          }
+        >
+          Approval
+        </button>
+      ) : (
+        <div></div>
+      )}
     </div>
   );
 }
 
 //weiAmount={weiAmount}
+
+/** <button
+        className="w-full bg-[#3ab0ff] text-[#efefef] font-medium text-center p-[10px] rounded-xl mt-7"
+        onClick={connectedNetwork === "0x2af8" ? handleApprove : handleApprove2}
+      >
+        Approval
+      </button>
+      {isSuccess && <div>{hash}</div>} */

@@ -10,6 +10,7 @@ import Web3 from "web3";
 import { ApproveToken } from "@/components/Approve";
 import { Bridgebutton } from "@/components/bridgebutton";
 import usdt from "../public/usdt.png";
+import { useConnect, useAccount } from "wagmi";
 //import { abi } from "../ABI/abi.json";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -850,6 +851,8 @@ async function checkAllowance() {
 }
 
 export default function Home({ sendDataToParent }) {
+  const { connect, connectors } = useConnect();
+  const { address, isConnected } = useAccount();
   // const Tokenabi = require("../ABI/tokenABI.json");
   const {
     data: hash,
@@ -1181,23 +1184,41 @@ export default function Home({ sendDataToParent }) {
               <span>-</span>
             </div>
 
-            <ApproveToken weiAmount={weiAmount} />
+            <div>
+              <div>
+                <ApproveToken weiAmount={weiAmount} />
 
-            <button
-              className="w-full bg-[#3ab0ff] text-[#efefef] font-medium text-center p-[10px] rounded-xl mt-7"
-              onClick={
-                connectedNetwork === "0x2af8" ? handleClick : handleClick2
-              }
-            >
-              Bridge
-            </button>
-            {isSuccess && <div>{hash}</div>}
+                <button
+                  className="w-full bg-[#3ab0ff] text-[#efefef] font-medium text-center p-[10px] rounded-xl mt-7"
+                  onClick={
+                    connectedNetwork === "0x2af8" ? handleClick : handleClick2
+                  }
+                >
+                  Bridge
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </main>
   );
 }
+
+/**
+ *  <ApproveToken weiAmount={weiAmount} />
+
+              <button
+                className="w-full bg-[#3ab0ff] text-[#efefef] font-medium text-center p-[10px] rounded-xl mt-7"
+                onClick={
+                  connectedNetwork === "0x2af8" ? handleClick : handleClick2
+                }
+              >
+                Bridge
+              </button>
+
+               {isSuccess && <div>{hash}</div>}
+ */
 
 // onClick={connectedNetwork === "0x2af8" ? handleClick : handleClick2}
 
