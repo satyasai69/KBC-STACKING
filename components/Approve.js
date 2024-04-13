@@ -3,6 +3,7 @@ import {
   useWriteContract,
   useSendTransaction,
   useReadContract,
+  useNetwork,
 } from "wagmi";
 import { useConnect, useAccount } from "wagmi";
 import { abi } from "../approveABI/abi.json";
@@ -14,26 +15,44 @@ export function ApproveToken(weiAmount) {
   const { address } = useAccount();
   const [connectedNetwork, setConnectedNetwork] = useState(null);
   const [approvalStatus, setApprovalStatus] = useState(false);
+  const [Tokenaddress, setTokenaddress] = useState("");
+  const [Bridgecontract, setBridgecontract] = useState("");
+  const [resultshow, setresultoshow] = useState("");
 
-  const result = useReadContract({
+  const result2 = useReadContract({
+    //kcp
     abi,
-    address: "0x55d398326f99059fF775485246999027B3197955",
+    address: "0xd8Be685E1868B4BAC6FE9D4dB8b6fDaA66CDc7f9", // token address
     functionName: "allowance",
     args: [
-      address, // "0x2373a942FEbC0ee428b266bDD58275794E7f1553",
-      "0xC5052054DBDC35f84D279CB321bE98480d807f6F",
+      address, // "0x2373a942FEbC0ee428b266bDD58275794E7f1553", // user address
+      "0x9A9bc340103C462365Db54E423f95784C664d3Df", // bridge contract address 0x9A9bc340103C462365Db54E423f95784C664d3Df
+    ],
+  });
+  result2.data;
+
+  console.log(result2.data, "kcp");
+
+  const result = useReadContract({
+    // bsc
+    abi,
+    address: "0x55d398326f99059fF775485246999027B3197955", // token address
+    functionName: "allowance",
+    args: [
+      address, // "0x2373a942FEbC0ee428b266bDD58275794E7f1553", // user address
+      "0xC5052054DBDC35f84D279CB321bE98480d807f6F", // bridge contract address
     ],
   });
   result.data;
+  console.log(result.data, "bsc");
 
   // console.log(address);
   // console.log(result.data, "data");
-
   useEffect(() => {
     // Check approval status here and update approvalStatus state accordingly
     // You can use Web3.js or ethers.js to check the approval status
     // For demonstration purposes, let's assume approvalStatus is a boolean value
-    if (result.data > 0) {
+    if (resultshow > weiAmount.weiAmount) {
       setApprovalStatus(false);
     } else {
       setApprovalStatus(true);
@@ -41,7 +60,7 @@ export function ApproveToken(weiAmount) {
 
     //  const isApproved = true; // Example approval status
     // setApprovalStatus(isApproved);
-  }, [result]);
+  }, [resultshow, weiAmount.weiAmount]);
   //const [networkName, setNetworkName] = useState("");
   //const [tokenaddress, settokenaddress] = useState();
   const {
@@ -51,9 +70,11 @@ export function ApproveToken(weiAmount) {
     isSuccess,
   } = useWriteContract();
 
+  const approveAmount12 = weiAmount.weiAmount;
+
   const handleApprove = async () => {
     try {
-      const approveAmount = 76544569876543467899876546789098765467890987651654567654565676776768;
+      const approveAmount = weiAmount; //76544569876543467899876546789098765467890987651654567654565676776768;
       await writeContract({
         abi,
         address: "0xd8Be685E1868B4BAC6FE9D4dB8b6fDaA66CDc7f9", // "0x563574f776D4537767Caf3E93494028F1CfF3368", //"0x563574f776D4537767Caf3E93494028F1CfF3368", // "0xF6E83df1a9659E9923E43A85aE6d8F07a2C95b61", // `0x${tokenaddress}`, //tokenAddress,//"0x9b2cbE8Ad90fAB7362C6eC5A4896C7629CAe3D16", //token address
@@ -61,7 +82,7 @@ export function ApproveToken(weiAmount) {
         args: [
           "0xC5052054DBDC35f84D279CB321bE98480d807f6F", // contract address
 
-          approveAmount, //BigInt(weiAmount),
+          approveAmount12,
         ],
         value: 0, //BigInt(valueInWei), // Set the value property to send ETH
       });
@@ -73,10 +94,11 @@ export function ApproveToken(weiAmount) {
       console.error("Error during approval:", error, weiAmount);
     }
   };
+  console.log(weiAmount);
 
   const handleApprove2 = async () => {
     try {
-      const approveAmount = 76544569876543467899876546789098765467890987651654567654565676776768;
+      const approveAmount = weiAmount; //76544569876543467899876546789098765467890987651654567654565676776768;
       await writeContract({
         abi,
         address: "0x55d398326f99059fF775485246999027B3197955", //"0x563574f776D4537767Caf3E93494028F1CfF3368", // "0xF6E83df1a9659E9923E43A85aE6d8F07a2C95b61", // `0x${tokenaddress}`, //tokenAddress,//"0x9b2cbE8Ad90fAB7362C6eC5A4896C7629CAe3D16", //token address
@@ -84,7 +106,7 @@ export function ApproveToken(weiAmount) {
         args: [
           "0xC5052054DBDC35f84D279CB321bE98480d807f6F", // contract address
 
-          approveAmount, //BigInt(weiAmount),
+          approveAmount12,
         ],
         value: 0, //BigInt(valueInWei), // Set the value property to send ETH
       });
@@ -123,25 +145,31 @@ export function ApproveToken(weiAmount) {
     return () => clearInterval(intervalId);
   }, []); // Empty dependency array means it only runs on mount and unmount
 
-  console.log(connectedNetwork);
+  console.log(connectedNetwork, "chainID");
 
-  /*useEffect(() => {
+  useEffect(() => {
     // Check the value of connectedNetwork and set networkName accordingly
     switch (connectedNetwork) {
-      case "0x11155111":
-        settokenaddress(0x617c5814f9c52e3768fd233088a01cc6de25c58a);
+      case "0x2af8": //kcb
+        setTokenaddress(0xd8be685e1868b4bac6fe9d4db8b6fdaa66cdc7f9);
+        setBridgecontract(0x9a9bc340103c462365db54e423f95784c664d3df);
+        setresultoshow(result2.data);
+
         break;
-      case "0x97":
-        settokenaddress(0xf6e83df1a9659e9923e43a85ae6d8f07a2c95b61);
+      case "0x38": //bsc
+        setTokenaddress(0x55d398326f99059ff775485246999027b3197955);
+        setBridgecontract(0xc5052054dbdc35f84d279cb321be98480d807f6f);
+        setresultoshow(result.data);
         break;
 
       // Add cases for other chains
       // ...
       default:
         // Handle other cases if needed
-        setNetworkName(""); // Default value if connectedNetwork is not matched
+        setTokenaddress("");
+        setBridgecontract("");
     }
-  }, [connectedNetwork]); // Run this effect whenever connectedNetwork changes  */
+  }, [connectedNetwork, result, result2]); // Run this effect whenever connectedNetwork changes
 
   // Calculate the multiplier based on the number of decimals
 

@@ -955,6 +955,8 @@ export default function Home({ sendDataToParent }) {
 
   // Multiply the token amount by the multiplier to get the amount in Wei
   const weiAmount = BigInt(value) * BigInt(multiplier);
+  // const BigweiAmount = BigInt(weiAmount);
+  const BigweiAmount = parseInt([BigInt(weiAmount)], 10); // Parse to integer (base 10)
 
   const handleClick = async () => {
     /*const recipientsArray = recipientsText
@@ -1186,7 +1188,7 @@ export default function Home({ sendDataToParent }) {
 
             <div>
               <div>
-                <ApproveToken weiAmount={weiAmount} />
+                <ApproveToken weiAmount={BigweiAmount} />
 
                 <button
                   className="w-full bg-[#3ab0ff] text-[#efefef] font-medium text-center p-[10px] rounded-xl mt-7"
