@@ -80,7 +80,7 @@ export function ApproveToken(weiAmount) {
         address: "0xd8Be685E1868B4BAC6FE9D4dB8b6fDaA66CDc7f9", // "0x563574f776D4537767Caf3E93494028F1CfF3368", //"0x563574f776D4537767Caf3E93494028F1CfF3368", // "0xF6E83df1a9659E9923E43A85aE6d8F07a2C95b61", // `0x${tokenaddress}`, //tokenAddress,//"0x9b2cbE8Ad90fAB7362C6eC5A4896C7629CAe3D16", //token address
         functionName: "approve",
         args: [
-          "0xC5052054DBDC35f84D279CB321bE98480d807f6F", // contract address
+          "0x9A9bc340103C462365Db54E423f95784C664d3Df", // contract address
 
           approveAmount12,
         ],
