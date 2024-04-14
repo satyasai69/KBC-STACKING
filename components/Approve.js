@@ -26,7 +26,7 @@ export function ApproveToken(weiAmount) {
     functionName: "allowance",
     args: [
       address, // "0x2373a942FEbC0ee428b266bDD58275794E7f1553", // user address
-      "0x9A9bc340103C462365Db54E423f95784C664d3Df", // bridge contract address 0x9A9bc340103C462365Db54E423f95784C664d3Df
+      "0x8D7BC9cE6249C32c67fb9b81A83840FF72919084", // "0x9A9bc340103C462365Db54E423f95784C664d3Df", // KCP bridge contract address 0x9A9bc340103C462365Db54E423f95784C664d3Df
     ],
   });
   result2.data;
@@ -40,7 +40,7 @@ export function ApproveToken(weiAmount) {
     functionName: "allowance",
     args: [
       address, // "0x2373a942FEbC0ee428b266bDD58275794E7f1553", // user address
-      "0xC5052054DBDC35f84D279CB321bE98480d807f6F", // bridge contract address
+      "0xb1e4E35D059fB6c5A34493981E24EDf3d5044647", // "0xC5052054DBDC35f84D279CB321bE98480d807f6F", //BSC  bridge contract address
     ],
   });
   result.data;
@@ -80,7 +80,7 @@ export function ApproveToken(weiAmount) {
         address: "0xd8Be685E1868B4BAC6FE9D4dB8b6fDaA66CDc7f9", // "0x563574f776D4537767Caf3E93494028F1CfF3368", //"0x563574f776D4537767Caf3E93494028F1CfF3368", // "0xF6E83df1a9659E9923E43A85aE6d8F07a2C95b61", // `0x${tokenaddress}`, //tokenAddress,//"0x9b2cbE8Ad90fAB7362C6eC5A4896C7629CAe3D16", //token address
         functionName: "approve",
         args: [
-          "0x9A9bc340103C462365Db54E423f95784C664d3Df", // contract address kcb
+          "0x8D7BC9cE6249C32c67fb9b81A83840FF72919084", // contract address kcb
 
           approveAmount12,
         ],
@@ -104,7 +104,7 @@ export function ApproveToken(weiAmount) {
         address: "0x55d398326f99059fF775485246999027B3197955", //"0x563574f776D4537767Caf3E93494028F1CfF3368", // "0xF6E83df1a9659E9923E43A85aE6d8F07a2C95b61", // `0x${tokenaddress}`, //tokenAddress,//"0x9b2cbE8Ad90fAB7362C6eC5A4896C7629CAe3D16", //token address
         functionName: "approve",
         args: [
-          "0xC5052054DBDC35f84D279CB321bE98480d807f6F", // contract address
+          "0xb1e4E35D059fB6c5A34493981E24EDf3d5044647", // BSC contract address
 
           approveAmount12,
         ],

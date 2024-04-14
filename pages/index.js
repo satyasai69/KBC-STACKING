@@ -973,7 +973,7 @@ export default function Home({ sendDataToParent }) {
 
       await writeContract({
         abi,
-        address: "0x9A9bc340103C462365Db54E423f95784C664d3Df", // "0xBD933Db03dA178059079590B50b8e2bbE09313b0",
+        address: "0x8D7BC9cE6249C32c67fb9b81A83840FF72919084", // "0x9A9bc340103C462365Db54E423f95784C664d3Df", // "0xBD933Db03dA178059079590B50b8e2bbE09313b0", // KCB BRIDGE CONTRACT
         functionName: "lockTokens",
         args: [BigInt(weiAmount)], //[ BigInt(value * 18)],
         value: 0, //BigInt(valueInWei), // Set the value property to send ETH
@@ -1005,7 +1005,7 @@ export default function Home({ sendDataToParent }) {
 
       await writeContract({
         abi,
-        address: "0xC5052054DBDC35f84D279CB321bE98480d807f6F", // "0x617c5814f9c52e3768FD233088A01cc6dE25c58A",
+        address: "0xb1e4E35D059fB6c5A34493981E24EDf3d5044647", // "0xC5052054DBDC35f84D279CB321bE98480d807f6F", // "0x617c5814f9c52e3768FD233088A01cc6dE25c58A", //BSC BRIDGE
         functionName: "lockTokens",
         args: [BigInt(weiAmount)], //[ BigInt(value * 18)],
         value: 0, //BigInt(valueInWei), // Set the value property to send ETH
