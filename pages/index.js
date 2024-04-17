@@ -1097,9 +1097,13 @@ export default function Home({ sendDataToParent }) {
         <nav class="px-4 lg:px-6 py-2.5  dark:bg-black-900">
           <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
             <a href="" class="flex items-center">
-              <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
-                KB bridge
-              </span>
+              <img
+                src="./KBClogo.png"
+                class="mr-3 h-6 sm:h-9"
+                alt="Flowbite Logo"
+              />
+
+              <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white"></span>
             </a>
             <div class="flex items-center lg:order-2">
               <a
@@ -1154,49 +1158,37 @@ export default function Home({ sendDataToParent }) {
                     href="#"
                     class="block py-2 pr-4 pl-3 text-white rounded bg-primary-700 lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white"
                     aria-current="page"
-                  >
-                    Home
-                  </a>
+                  ></a>
                 </li>
                 <li>
                   <a
                     href="#"
                     class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
-                  >
-                    Company
-                  </a>
+                  ></a>
                 </li>
                 <li>
                   <a
                     href="#"
                     class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
-                  >
-                    Marketplace
-                  </a>
+                  ></a>
                 </li>
                 <li>
                   <a
                     href="#"
                     class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
-                  >
-                    Features
-                  </a>
+                  ></a>
                 </li>
                 <li>
                   <a
                     href="#"
                     class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
-                  >
-                    Team
-                  </a>
+                  ></a>
                 </li>
                 <li>
                   <a
                     href="#"
                     class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
-                  >
-                    Contact
-                  </a>
+                  ></a>
                 </li>
               </ul>
             </div>
@@ -1206,8 +1198,8 @@ export default function Home({ sendDataToParent }) {
 
       <main>
         <div className="bg-[#17161b] h-screen flex justify-center items-center py-10 px-4">
-          <div className="bg-[#252027] rounded-xl p-4 max-w-3xl w-full mx-auto">
-            <div className="bg-[#353037] rounded-lg p-3">
+          <div className="bg-[#252027] rounded-xl p-4 max-w-3xl w-full mx-auto border border-blue-500 border-solid border-4 ">
+            <div className="bg-[#353037] rounded-lg p-3 border ">
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-4">
                   <div>
@@ -1351,10 +1343,13 @@ export default function Home({ sendDataToParent }) {
             <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
               <div class="md:flex md:justify-between">
                 <div class="mb-6 md:mb-0">
+                  <img
+                    src="./KBClogo.png"
+                    class="mr-3 h-6 sm:h-9"
+                    alt="Flowbite Logo"
+                  />
                   <a href="" class="flex items-center">
-                    <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
-                      KB bridge
-                    </span>
+                    <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"></span>
                   </a>
                 </div>
                 <div class="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
@@ -1365,12 +1360,12 @@ export default function Home({ sendDataToParent }) {
                     <ul class="text-gray-500 dark:text-gray-400 font-medium">
                       <li class="mb-4">
                         <a href="" class="hover:underline">
-                          Flowbite
+                          KBC
                         </a>
                       </li>
                       <li>
                         <a href="" class="hover:underline">
-                          Tailwind CSS
+                          KBC
                         </a>
                       </li>
                     </ul>
@@ -1416,7 +1411,7 @@ export default function Home({ sendDataToParent }) {
                 <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">
                   © 2024{" "}
                   <a href="" class="hover:underline">
-                    Flowbite™
+                    KBC™
                   </a>
                   . All Rights Reserved.
                 </span>
