@@ -1243,7 +1243,13 @@ export default function Home({ sendDataToParent }) {
                   placeholder="0.00000"
                   className="bg-transparent flex-1 outline-none border-none text-base text-[#ebefe9]"
                   value={value}
-                  onChange={(e) => setValue(e.target.value)}
+                 // onChange={(e) => setValue(e.target.value)}
+                      onChange={(e) => {
+    const inputValue = e.target.value;
+    if (!isNaN(inputValue) && parseFloat(inputValue) >= 1) {
+      setValue(inputValue);
+    }
+  }}
                 />
               </div>
             </div>
@@ -1296,7 +1302,13 @@ export default function Home({ sendDataToParent }) {
                   placeholder="0.00000"
                   className="bg-transparent flex-1 outline-none border-none text-base text-[#ebefe9]"
                   value={value}
-                  onChange={(e) => setValue(e.target.value)}
+                 // onChange={(e) => setValue(e.target.value)}
+                      onChange={(e) => {
+    const inputValue = e.target.value;
+    if (!isNaN(inputValue) && parseFloat(inputValue) >= 1) {
+      setValue(inputValue);
+    }
+  }}
                 />
               </div>
             </div>
