@@ -1237,9 +1237,9 @@ export default function Home({ sendDataToParent }) {
                   </div>
                 </div>
                 <input
-                 // type="text"
-    type="number"
-  step="any
+                 type="text"
+   // type="number"
+  //step="any
                   placeholder="0.00000"
                   className="bg-transparent flex-1 outline-none border-none text-base text-[#ebefe9]"
                   value={value}
@@ -1290,9 +1290,9 @@ export default function Home({ sendDataToParent }) {
                   </div>
                 </div>
                 <input
-                  // type="text"
-    type="number"
-  step="any
+                   type="text"
+   // type="number"
+  //step="any
                   placeholder="0.00000"
                   className="bg-transparent flex-1 outline-none border-none text-base text-[#ebefe9]"
                   value={value}
