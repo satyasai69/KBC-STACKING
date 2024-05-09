@@ -15,7 +15,6 @@ import {
 } from "wagmi/chains";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
-
 const kbcfoundation = {
   id: 11000,
   name: "kbcfoundation",
@@ -36,11 +35,38 @@ const kbcfoundation = {
   }, */
 };
 
+const kbcfoundationTestnet = {
+  id: 22000,
+  name: "kbcfoundationTestnet",
+  iconUrl: "https://kbcfoundation.com/images/logo.png",
+  iconBackground: "#fff",
+  nativeCurrency: {
+    name: "kbcfoundationTestnet",
+    symbol: "TKBC",
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: { http: ["https://testnet-rpc.kbcfoundation.com"] },
+  },
+  blockExplorers: {
+    default: {
+      name: "kbcfoundationTestnet",
+      url: "https://testnet-scan.kbcfoundation.com/",
+    },
+  },
+  /* contracts: {
+    multicall3: {
+      address: "0xca11bde05977b3631167028862be2a173976ca11",
+      blockCreated: 11907934,
+    },
+  }, */
+};
+
 export default function App({ Component, pageProps }) {
   const config = getDefaultConfig({
     appName: "My RainbowKit App",
     projectId: "YOUR_PROJECT_ID",
-    chains: [bsc, kbcfoundation],
+    chains: [kbcfoundationTestnet],
     ssr: true, // If your dApp uses server side rendering (SSR)
   });
   const queryClient = new QueryClient();

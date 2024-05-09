@@ -3,9 +3,17 @@ import { Inter } from "next/font/google";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { BiSolidDownArrow } from "react-icons/bi";
 import Logo from "../public/Logo.svg";
+import { Stackcard } from "@/components/stackcard";
 
 import React, { useState, useEffect } from "react";
-import { useWaitForTransactionReceipt, useWriteContract } from "wagmi";
+
+import {
+  useWaitForTransactionReceipt,
+  useWriteContract,
+  useSendTransaction,
+  useReadContract,
+  useNetwork,
+} from "wagmi";
 import Web3 from "web3";
 import { ApproveToken } from "@/components/Approve";
 import { Bridgebutton } from "@/components/bridgebutton";
@@ -28,8 +36,13 @@ export default function Home({ sendDataToParent }) {
   } = useWriteContract();
 
   return (
-    <>
-      <ConnectButton />
-    </>
+    <main className="relative">
+      <div className="absolute top-0 right-0 mt-4 mr-4">
+        <ConnectButton />
+      </div>
+      <div className="flex flex-col items-center justify-center h-screen m-6">
+        <Stackcard />
+      </div>
+    </main>
   );
 }
