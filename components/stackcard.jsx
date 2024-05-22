@@ -24,6 +24,8 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 // const ABI = require("../ABI/stack.json");
+import { Stackedbal } from "./stakedbalance";
+import { Apr } from "./apr";
 
 export function Stackcard() {
   const {
@@ -32,14 +34,14 @@ export function Stackcard() {
     isPending,
     isSuccess,
   } = useWriteContract();
+  const { address } = useAccount();
 
   const [stackamount, setstackamount] = useState();
   const [unstackamount, setunstackamount] = useState();
-  const [claimamounts, setClaimAmounts] = useState(null);
+  const [claimamounts, setClaimAmounts] = useState("0");
   const [stackedbalances, setstackedbalances] = useState("0");
-  const { address } = useAccount();
 
-  const userStackedbakance = useReadContract({
+  /* const userStackedbakance = useReadContract({
     abi,
     address: "0x862DFC7aC6152281f33e0CE252F3AB6996336690", // token address
     functionName: "userstacked",
@@ -73,7 +75,7 @@ export function Stackcard() {
 
   useEffect(() => {
     fetchClaimAmount();
-  }, []);
+  }, []); */
 
   const stakecall = async () => {
     try {
@@ -149,13 +151,17 @@ export function Stackcard() {
             <p className="text-sm text-gray-500 dark:text-gray-400">
               Current APR
             </p>
-            <p className="text-2xl font-medium">5.25%</p>
+            <p className="text-2xl font-medium">
+              <Apr />
+            </p>
           </div>
           <div>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              Stacked Balance {stackedbalances}
+              Stacked Balance
             </p>
-            <p className="text-2xl font-medium">KBC 12.6</p>
+            <p className="text-2xl font-medium">
+              <Stackedbal />
+            </p>
           </div>
         </div>
         <div className="grid grid-cols-3 gap-4">
