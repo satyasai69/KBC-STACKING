@@ -20,13 +20,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
+import FeeButton from "@/components/adminfeebutton";
 export default function Admin() {
   const [stakaddress, usestakaddress] = useState();
   const [rewardaddress, setrewardaddress] = useState();
   const [rewardpreblock, setrewardpreblock] = useState();
   const [startBlock, setstartBlock] = useState();
   const [endBlock, setendBlock] = useState();
+  const [tax, sattax] = useState();
   const {
     data: hash,
     writeContract,
@@ -146,6 +147,27 @@ export default function Admin() {
     },
   ];
 
+  /* const taxfeeupdate = async () => {
+    try {
+      await writeContract({
+        abi,
+        address: "0x02Ba95b4831cf794A38Ba2DC7Ba9E101C5d96A43",
+        functionName: "taxfeeupdate",
+        args: [tax],
+        value: 0,
+      });
+      console.log("tax updating to: ", tax);
+      //   console.log(BigInt(value * 10 ** decimals));
+      console.log(" successful!");
+    } catch (error) {
+      console.error("Error during staking:", error);
+    }
+  }; */
+
+  const handleTaxChange = (event) => {
+    sattax(event.target.value);
+  };
+
   const createpool = async () => {
     try {
       const decimals = 18;
@@ -245,31 +267,33 @@ export default function Admin() {
               </CardFooter>
             </Card>
           </TabsContent>
-          <TabsContent value="password">
-            <Card>
-              <CardHeader>
-                <CardTitle>Password</CardTitle>
-                <CardDescription>
-                  Change your password here. After saving, youll be logged out.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                <div className="space-y-1">
-                  <Label htmlFor="current">Current password</Label>
-                  <Input id="current" type="password" />
-                </div>
-                <div className="space-y-1">
-                  <Label htmlFor="new">New password</Label>
-                  <Input id="new" type="password" />
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button>Save password</Button>
-              </CardFooter>
-            </Card>
-          </TabsContent>
+          <FeeButton />
         </Tabs>
       </div>
     </>
   );
 }
+
+/** <Button onClick={taxfeeupdate}>Update tax</Button> */
+
+/** 272  <TabsContent value="password">
+            <Card>
+              <CardHeader>
+                <CardTitle>TAXUPDATE</CardTitle>
+                <CardDescription>Update tax fee on swaps</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <div className="space-y-1">
+                  <Label htmlFor="current">Update tax </Label>
+                  <Input
+                    id="current"
+                    type="numbers"
+                    onChange={handleTaxChange}
+                  />
+                </div>
+              </CardContent>
+              <CardFooter>
+              <Button onClick={taxfeeupdate}>Update tax</Button> 
+              </CardFooter>
+            </Card>
+          </TabsContent> */
