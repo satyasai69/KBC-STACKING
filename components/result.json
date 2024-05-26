@@ -1,0 +1,17 @@
+[
+    {
+        "stakedToken": "Staked Token 1",
+        "smartChefAddress": "Smart Chef Address 1",
+        "rewardToken": "Reward Token 1"
+    },
+    {
+        "stakedToken": "Staked Token 2",
+        "smartChefAddress": "Smart Chef Address 2",
+        "rewardToken": "Reward Token 2"
+    },
+    {
+        "stakedToken": "Staked Token 3",
+        "smartChefAddress": "Smart Chef Address 3",
+        "rewardToken": "Reward Token 3"
+    }
+]

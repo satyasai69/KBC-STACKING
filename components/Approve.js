@@ -11,7 +11,7 @@ import { useConnect, useAccount } from "wagmi";
 import { useState, useEffect } from "react";
 import { Bridgebutton } from "@/components/bridgebutton";
 
-export function ApproveToken(weiAmount) {
+export function ApproveToken({ weiAmount, stack }) {
   const { connect, connectors } = useConnect();
   const { address } = useAccount();
   const [connectedNetwork, setConnectedNetwork] = useState(null);
@@ -682,7 +682,7 @@ export function ApproveToken(weiAmount) {
     isSuccess,
   } = useWriteContract();
 
-  const approveAmount12 = weiAmount.weiAmount;
+  const approveAmount12 = weiAmount; // weiAmount.weiAmount;
   const multiplier = 10 ** 18;
 
   const handleApprove = async () => {
@@ -691,10 +691,10 @@ export function ApproveToken(weiAmount) {
       const approveAmount = weiAmount; //76544569876543467899876546789098765467890987651654567654565676776768;
       await writeContract({
         abi,
-        address: "0x7718f81c0E52E4d46619D2b7Ee11D11260D3898C", // "0x563574f776D4537767Caf3E93494028F1CfF3368", //"0x563574f776D4537767Caf3E93494028F1CfF3368", // "0xF6E83df1a9659E9923E43A85aE6d8F07a2C95b61", // `0x${tokenaddress}`, //tokenAddress,//"0x9b2cbE8Ad90fAB7362C6eC5A4896C7629CAe3D16", //token address
+        address: stack.stack, //"0x7718f81c0E52E4d46619D2b7Ee11D11260D3898C", // "0xF6E83df1a9659E9923E43A85aE6d8F07a2C95b61", // `0x${tokenaddress}`, //tokenAddress,//"0x9b2cbE8Ad90fAB7362C6eC5A4896C7629CAe3D16", //token address
         functionName: "approve",
         args: [
-          "0x862DFC7aC6152281f33e0CE252F3AB6996336690", // contract address kcb
+          stack.pool, // "0x862DFC7aC6152281f33e0CE252F3AB6996336690", // contract address kcb
 
           ApproveweiAmount,
         ],
@@ -702,13 +702,12 @@ export function ApproveToken(weiAmount) {
       });
 
       // Handle success if needed
-      console.log("Approval successful! ");
+      console.log("Approval successful! ", stack.pool, "hi");
     } catch (error) {
       // Handle error if needed
       console.error("Error during approval:", error, weiAmount);
     }
   };
-  console.log(weiAmount);
 
   // py-2.5 px-5 me-2 text-sm font-medium  text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 inline-flex items-center
   return (

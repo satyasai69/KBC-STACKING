@@ -24,10 +24,12 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 // const ABI = require("../ABI/stack.json");
-import { Stackedbal } from "./stakedbalance";
-import { Apr } from "./apr";
+import Stackedbal from "./stakedbalance";
+import Apr from "./apr";
+import TokenInfo from "./tokensyb";
 
-export function Stackcard() {
+export function Stackcard(stack, reward, pool) {
+  console.log(stack.stack, stack.pool, "pool address");
   const {
     data: hash,
     writeContract,
@@ -36,46 +38,14 @@ export function Stackcard() {
   } = useWriteContract();
   const { address } = useAccount();
 
+  console.log(stack.pool, "address pool");
+  const poolss = pool;
+
   const [stackamount, setstackamount] = useState();
   const [unstackamount, setunstackamount] = useState();
   const [claimamounts, setClaimAmounts] = useState("0");
   const [stackedbalances, setstackedbalances] = useState("0");
-
-  /* const userStackedbakance = useReadContract({
-    abi,
-    address: "0x862DFC7aC6152281f33e0CE252F3AB6996336690", // token address
-    functionName: "userstacked",
-    args: [address],
-  });
-
-  userStackedbakance.data;
-
-  console.log(stackedbalances);
-
-  const unclaimamount = useReadContract({
-    abi,
-    address: "0x862DFC7aC6152281f33e0CE252F3AB6996336690", // token address
-    functionName: "pendingReward",
-    args: [address],
-  });
-  unclaimamount.data;
-
-  const fetchClaimAmount = async () => {
-    try {
-      unclaimamount();
-
-      setClaimAmounts(unclaimamount.data); // Update state here
-
-      userStackedbakance();
-      setstackedbalances(BigInt(userStackedbakance.data.toString()));
-    } catch (error) {
-      console.error("Error fetching claim amount:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchClaimAmount();
-  }, []); */
+  const [pools, setpools] = useState();
 
   const stakecall = async () => {
     try {
@@ -87,16 +57,16 @@ export function Stackcard() {
 
       await writeContract({
         abi,
-        address: "0x862DFC7aC6152281f33e0CE252F3AB6996336690",
+        address: stack.pool, // "0x862DFC7aC6152281f33e0CE252F3AB6996336690",
         functionName: "deposit",
-        args: [BigInt(stakeweiAmount)],
+        args: [BigInt(stakeweiAmount)], //  stackamount,
         value: 0,
       });
 
-      console.log(BigInt(value * 10 ** decimals));
+      // console.log(BigInt(value * 10 ** decimals));
       console.log(" successful!");
     } catch (error) {
-      console.error("Error during staking:", error);
+      console.error("Error during staking:", stack.pool, error);
     }
   };
 
@@ -110,16 +80,16 @@ export function Stackcard() {
 
       await writeContract({
         abi,
-        address: "0x862DFC7aC6152281f33e0CE252F3AB6996336690",
+        address: stack.pool, // "0x862DFC7aC6152281f33e0CE252F3AB6996336690", // pool
         functionName: "withdraw",
         args: [BigInt(unstakeweiAmount)],
         value: 0,
       });
 
       console.log(BigInt(value * 10 ** decimals));
-      console.log(" successful!");
+      console.log(" successful!", pool);
     } catch (error) {
-      console.error("Error during staking:", error);
+      console.error("Error during staking:", stack.pool, error);
     }
   };
 
@@ -127,7 +97,7 @@ export function Stackcard() {
     try {
       await writeContract({
         abi,
-        address: "0x862DFC7aC6152281f33e0CE252F3AB6996336690",
+        address: stack.pool, // "0x862DFC7aC6152281f33e0CE252F3AB6996336690",
         functionName: "claim",
         args: [],
         value: 0,
@@ -152,16 +122,19 @@ export function Stackcard() {
               Current APR
             </p>
             <p className="text-2xl font-medium">
-              <Apr />
+              <Apr stack={stack} />
             </p>
           </div>
           <div>
+            <TokenInfo
+              contractAddress={stack.stack}
+              RcontractAddress={stack.reward}
+            />
             <p className="text-sm text-gray-500 dark:text-gray-400">
               Stacked Balance
             </p>
-            <p className="text-2xl font-medium">
-              <Stackedbal />
-            </p>
+            <Stackedbal pool={stack} />
+            <p className="text-2xl font-medium"></p>
           </div>
         </div>
         <div className="grid grid-cols-3 gap-4">
@@ -190,8 +163,8 @@ export function Stackcard() {
               </div>
 
               <DrawerFooter>
-                <ApproveToken weiAmount={stackamount} />
-                <RewardapproveToken weiAmount={stackamount} />
+                <ApproveToken weiAmount={stackamount} stack={stack} />
+                <RewardapproveToken weiAmount={stackamount} reward={stack} />
                 <DrawerClose>
                   <Button className="m-3" onClick={stakecall}>
                     Submit
@@ -315,6 +288,368 @@ function PlusIcon(props) {
           </Button> */
 
 const abi = [
+  { type: "constructor", inputs: [], stateMutability: "nonpayable" },
+  {
+    type: "function",
+    name: "PRECISION_FACTOR",
+    inputs: [],
+    outputs: [{ name: "", type: "uint256", internalType: "uint256" }],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "SMART_CHEF_FACTORY",
+    inputs: [],
+    outputs: [{ name: "", type: "address", internalType: "address" }],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "accTokenPerShare",
+    inputs: [],
+    outputs: [{ name: "", type: "uint256", internalType: "uint256" }],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "bonusEndBlock",
+    inputs: [],
+    outputs: [{ name: "", type: "uint256", internalType: "uint256" }],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "claim",
+    inputs: [],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "deposit",
+    inputs: [{ name: "_amount", type: "uint256", internalType: "uint256" }],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "emergencyRewardWithdraw",
+    inputs: [{ name: "_amount", type: "uint256", internalType: "uint256" }],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "emergencyWithdraw",
+    inputs: [],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "initialize",
+    inputs: [
+      {
+        name: "_stakedToken",
+        type: "address",
+        internalType: "contract IERC20Metadata",
+      },
+      {
+        name: "_rewardToken",
+        type: "address",
+        internalType: "contract IERC20Metadata",
+      },
+      { name: "_rewardPerBlock", type: "uint256", internalType: "uint256" },
+      { name: "_startBlock", type: "uint256", internalType: "uint256" },
+      { name: "_bonusEndBlock", type: "uint256", internalType: "uint256" },
+    ],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "lastRewardBlock",
+    inputs: [],
+    outputs: [{ name: "", type: "uint256", internalType: "uint256" }],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "owner",
+    inputs: [],
+    outputs: [{ name: "", type: "address", internalType: "address" }],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "pendingReward",
+    inputs: [{ name: "_user", type: "address", internalType: "address" }],
+    outputs: [{ name: "", type: "uint256", internalType: "uint256" }],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "recoverToken",
+    inputs: [{ name: "_token", type: "address", internalType: "address" }],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "renounceOwnership",
+    inputs: [],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "rewardPerBlock",
+    inputs: [],
+    outputs: [{ name: "", type: "uint256", internalType: "uint256" }],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "rewardToken",
+    inputs: [],
+    outputs: [
+      { name: "", type: "address", internalType: "contract IERC20Metadata" },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "stakedToken",
+    inputs: [],
+    outputs: [
+      { name: "", type: "address", internalType: "contract IERC20Metadata" },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "startBlock",
+    inputs: [],
+    outputs: [{ name: "", type: "uint256", internalType: "uint256" }],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "stopReward",
+    inputs: [],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "transferOwnership",
+    inputs: [{ name: "newOwner", type: "address", internalType: "address" }],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "updateRewardPerBlock",
+    inputs: [
+      { name: "_rewardPerBlock", type: "uint256", internalType: "uint256" },
+    ],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "updateStartAndEndBlocks",
+    inputs: [
+      { name: "_startBlock", type: "uint256", internalType: "uint256" },
+      { name: "_bonusEndBlock", type: "uint256", internalType: "uint256" },
+    ],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "userInfo",
+    inputs: [{ name: "", type: "address", internalType: "address" }],
+    outputs: [
+      { name: "amount", type: "uint256", internalType: "uint256" },
+      { name: "rewardDebt", type: "uint256", internalType: "uint256" },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "userstacked",
+    inputs: [],
+    outputs: [{ name: "", type: "uint256", internalType: "uint256" }],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "withdraw",
+    inputs: [{ name: "_amount", type: "uint256", internalType: "uint256" }],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "event",
+    name: "Deposit",
+    inputs: [
+      { name: "user", type: "address", indexed: true, internalType: "address" },
+      {
+        name: "amount",
+        type: "uint256",
+        indexed: false,
+        internalType: "uint256",
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: "event",
+    name: "EmergencyWithdraw",
+    inputs: [
+      { name: "user", type: "address", indexed: true, internalType: "address" },
+      {
+        name: "amount",
+        type: "uint256",
+        indexed: false,
+        internalType: "uint256",
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: "event",
+    name: "NewPoolLimit",
+    inputs: [
+      {
+        name: "poolLimitPerUser",
+        type: "uint256",
+        indexed: false,
+        internalType: "uint256",
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: "event",
+    name: "NewRewardPerBlock",
+    inputs: [
+      {
+        name: "rewardPerBlock",
+        type: "uint256",
+        indexed: false,
+        internalType: "uint256",
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: "event",
+    name: "NewStartAndEndBlocks",
+    inputs: [
+      {
+        name: "startBlock",
+        type: "uint256",
+        indexed: false,
+        internalType: "uint256",
+      },
+      {
+        name: "endBlock",
+        type: "uint256",
+        indexed: false,
+        internalType: "uint256",
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: "event",
+    name: "OwnershipTransferred",
+    inputs: [
+      {
+        name: "previousOwner",
+        type: "address",
+        indexed: true,
+        internalType: "address",
+      },
+      {
+        name: "newOwner",
+        type: "address",
+        indexed: true,
+        internalType: "address",
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: "event",
+    name: "RewardsStop",
+    inputs: [
+      {
+        name: "blockNumber",
+        type: "uint256",
+        indexed: false,
+        internalType: "uint256",
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: "event",
+    name: "TokenRecovery",
+    inputs: [
+      {
+        name: "token",
+        type: "address",
+        indexed: true,
+        internalType: "address",
+      },
+      {
+        name: "amount",
+        type: "uint256",
+        indexed: false,
+        internalType: "uint256",
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: "event",
+    name: "UpdateProfileAndThresholdPointsRequirement",
+    inputs: [
+      {
+        name: "isProfileRequested",
+        type: "bool",
+        indexed: false,
+        internalType: "bool",
+      },
+      {
+        name: "thresholdPoints",
+        type: "uint256",
+        indexed: false,
+        internalType: "uint256",
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: "event",
+    name: "Withdraw",
+    inputs: [
+      { name: "user", type: "address", indexed: true, internalType: "address" },
+      {
+        name: "amount",
+        type: "uint256",
+        indexed: false,
+        internalType: "uint256",
+      },
+    ],
+    anonymous: false,
+  },
+];
+
+/* const abi = [
   {
     inputs: [
       {
@@ -664,4 +999,4 @@ const abi = [
     stateMutability: "nonpayable",
     type: "function",
   },
-];
+]; */

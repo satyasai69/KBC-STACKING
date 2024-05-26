@@ -11,7 +11,7 @@ import { useConnect, useAccount } from "wagmi";
 import { useState, useEffect } from "react";
 import { Bridgebutton } from "@/components/bridgebutton";
 
-export function RewardapproveToken(weiAmount) {
+export function RewardapproveToken({ weiAmount, reward }) {
   const { connect, connectors } = useConnect();
   const { address } = useAccount();
   const [connectedNetwork, setConnectedNetwork] = useState(null);
@@ -682,7 +682,7 @@ export function RewardapproveToken(weiAmount) {
     isSuccess,
   } = useWriteContract();
 
-  const approveAmount12 = weiAmount.weiAmount;
+  const approveAmount12 = weiAmount; //  weiAmount.weiAmount;
   const multiplier = 10 ** 18;
 
   const handleApprove = async () => {
@@ -691,10 +691,10 @@ export function RewardapproveToken(weiAmount) {
       const approveAmount = weiAmount; //76544569876543467899876546789098765467890987651654567654565676776768;
       await writeContract({
         abi,
-        address: "0xc35908aBaBc634F4eB104dd9Ee01fA35Be6D0030", // "0x563574f776D4537767Caf3E93494028F1CfF3368", //"0x563574f776D4537767Caf3E93494028F1CfF3368", // "0xF6E83df1a9659E9923E43A85aE6d8F07a2C95b61", // `0x${tokenaddress}`, //tokenAddress,//"0x9b2cbE8Ad90fAB7362C6eC5A4896C7629CAe3D16", //token address
+        address: reward.reward, // "0xc35908aBaBc634F4eB104dd9Ee01fA35Be6D0030", // "0x563574f776D4537767Caf3E93494028F1CfF3368", //"0x563574f776D4537767Caf3E93494028F1CfF3368", // "0xF6E83df1a9659E9923E43A85aE6d8F07a2C95b61", // `0x${tokenaddress}`, //tokenAddress,//"0x9b2cbE8Ad90fAB7362C6eC5A4896C7629CAe3D16", //token address
         functionName: "approve",
         args: [
-          "0x862DFC7aC6152281f33e0CE252F3AB6996336690", // contract address kcb
+          reward.pool, // "0x862DFC7aC6152281f33e0CE252F3AB6996336690", // contract address kcb
 
           ApproveweiAmount,
         ],
@@ -702,7 +702,7 @@ export function RewardapproveToken(weiAmount) {
       });
 
       // Handle success if needed
-      console.log("Approval successful! ");
+      console.log("Approval successful! ", reward.pool);
     } catch (error) {
       // Handle error if needed
       console.error("Error during approval:", error, weiAmount);
