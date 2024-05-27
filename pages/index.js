@@ -156,7 +156,7 @@ export default function Home({ sendDataToParent }) {
       const provider = new ethers.providers.JsonRpcProvider(
         "https://testnet-rpc.kbcfoundation.com/"
       ); // Initialize provider
-      const contractAddress = "0xdadbF69a5FDd345dCc833072Cf4f6bc8FC799543"; // "0x164801E21f133572FA174c6A96D234ba00573A4d"; // Address of your smart chef contract
+      const contractAddress = "0x4acDbf9EB1C9cd647Ce64c31F2ADaD554ca939aF"; // "0x2c881D617d537f80751b3a38F899c8c8E721403F"; // "0xdadbF69a5FDd345dCc833072Cf4f6bc8FC799543"; // "0x164801E21f133572FA174c6A96D234ba00573A4d"; // Address of your smart chef contract
       const contract = new ethers.Contract(contractAddress, abi, provider); // Initialize contract instance
       const data = await contract.getDeployedPools(); // Call the read function from your smart contract
       setResult(data); // Update the state with the result
