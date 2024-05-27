@@ -27,6 +27,7 @@ import {
 import Stackedbal from "./stakedbalance";
 import Apr from "./apr";
 import TokenInfo from "./tokensyb";
+import PendingReward from "./peddingrewards";
 
 export function Stackcard(stack, reward, pool) {
   console.log(stack.stack, stack.pool, "pool address");
@@ -115,6 +116,7 @@ export function Stackcard(stack, reward, pool) {
       <CardHeader>
         <CardTitle> stake </CardTitle>
       </CardHeader>
+
       <CardContent className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
@@ -130,10 +132,12 @@ export function Stackcard(stack, reward, pool) {
               contractAddress={stack.stack}
               RcontractAddress={stack.reward}
             />
+
             <p className="text-sm text-gray-500 dark:text-gray-400">
               Stacked Balance
             </p>
             <Stackedbal pool={stack} />
+            <PendingReward contractAddress={stack.pool} />
             <p className="text-2xl font-medium"></p>
           </div>
         </div>
@@ -216,6 +220,7 @@ export function Stackcard(stack, reward, pool) {
             <DollarSignIcon className="mr-2 h-4 w-4" />
             Claim
           </Button>
+
           <div className="mt-2 text-sm text-gray-500 dark:text-gray-400"></div>
         </div>
       </CardContent>
