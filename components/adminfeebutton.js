@@ -26,7 +26,9 @@ export default function FeeButton() {
     isPending,
     isSuccess,
   } = useWriteContract();
-  const [tax, sattax] = useState();
+  const [tax, settax] = useState();
+  const [taxpair, settaxpair] = useState();
+  const [taxpairaddress, settaxpairaddress] = useState();
 
   const abi = [
     {
@@ -285,6 +287,26 @@ export default function FeeButton() {
       stateMutability: "nonpayable",
       type: "function",
     },
+    {
+      constant: false,
+      inputs: [
+        {
+          internalType: "address",
+          name: "pairAddress",
+          type: "address",
+        },
+        {
+          internalType: "uint256",
+          name: "newTaxFee",
+          type: "uint256",
+        },
+      ],
+      name: "updatePairTaxFee",
+      outputs: [],
+      payable: false,
+      stateMutability: "nonpayable",
+      type: "function",
+    },
   ];
   const taxfeeupdate = async () => {
     try {
@@ -303,27 +325,85 @@ export default function FeeButton() {
     }
   };
 
-  const handleTaxChange = (event) => {
-    sattax(event.target.value);
+  const taxfeeupdatepair = async () => {
+    try {
+      await writeContract({
+        abi,
+        address: "0x1f0F8504365e2F39D97e8B9Dd5399Bf04300A82d", //factory address
+        functionName: "updatePairTaxFee",
+        args: [taxpairaddress, taxpair],
+        value: 0,
+      });
+      console.log("tax updating to: ", taxpairaddress, taxpair);
+      //   console.log(BigInt(value * 10 ** decimals));
+      console.log(" successful!");
+    } catch (error) {
+      console.error("Error during staking:", error);
+    }
   };
 
+  const handleTaxChange = (event) => {
+    settax(event.target.value);
+  };
+
+  const handleTaxonPairChange = (event) => {
+    settaxpair(event.target.value);
+  };
+  const handleTaxChangepair = (event) => {
+    settaxpairaddress(event.target.value);
+  };
   return (
-    <TabsContent value="password">
-      <Card>
-        <CardHeader>
-          <CardTitle>TAXUPDATE</CardTitle>
-          <CardDescription>Update tax fee on swaps</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-2">
-          <div className="space-y-1">
-            <Label htmlFor="current">Update tax </Label>
-            <Input id="current" type="numbers" onChange={handleTaxChange} />
-          </div>
-        </CardContent>
-        <CardFooter>
-          <Button onClick={taxfeeupdate}>Update tax</Button>
-        </CardFooter>
-      </Card>
-    </TabsContent>
+    <>
+      <TabsContent value="password">
+        <Card>
+          <CardHeader>
+            <CardTitle>TAXUPDATE</CardTitle>
+            <CardDescription>Update tax fee on swaps</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <div className="space-y-1">
+              <Label htmlFor="current">Update tax </Label>
+              <Input id="current" type="numbers" onChange={handleTaxChange} />
+            </div>
+          </CardContent>
+          <CardFooter>
+            <Button onClick={taxfeeupdate}>Update tax</Button>
+          </CardFooter>
+        </Card>
+      </TabsContent>
+      <TabsContent value="password">
+        <Card>
+          <CardHeader>
+            <CardTitle>TAXUPDATE ON PAIRS</CardTitle>
+            <CardDescription>
+              Update tax fee on swaps depolyedn pairs
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <div className="space-y-1">
+              <Label htmlFor="current">Update tax on pair </Label>
+              <Input
+                id="current"
+                type="numbers"
+                onChange={handleTaxChangepair}
+              />
+            </div>
+          </CardContent>
+          <CardContent className="space-y-2">
+            <div className="space-y-1">
+              <Label htmlFor="current">Update tax on pair </Label>
+              <Input
+                id="current"
+                type="numbers"
+                onChange={handleTaxonPairChange}
+              />
+            </div>
+          </CardContent>
+          <CardFooter>
+            <Button onClick={taxfeeupdatepair}>Update tax</Button>
+          </CardFooter>
+        </Card>
+      </TabsContent>
+    </>
   );
 }
