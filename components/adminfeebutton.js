@@ -290,7 +290,7 @@ export default function FeeButton() {
     try {
       await writeContract({
         abi,
-        address: "0xDF77342e4a987CFEcB80011b79C431653c70b106", //factory address
+        address: "0x1f0F8504365e2F39D97e8B9Dd5399Bf04300A82d", //factory address
         functionName: "taxfeeupdate",
         args: [tax],
         value: 0,
