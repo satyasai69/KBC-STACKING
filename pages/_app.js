@@ -42,7 +42,7 @@ const kbcfoundationTestnet = {
   iconBackground: "#fff",
   nativeCurrency: {
     name: "kbcfoundationTestnet",
-    symbol: "TKBC",
+    symbol: "KBC",
     decimals: 18,
   },
   rpcUrls: {
