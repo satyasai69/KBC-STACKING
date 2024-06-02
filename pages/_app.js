@@ -36,8 +36,8 @@ const kbcfoundation = {
 };
 
 const kbcfoundationTestnet = {
-  id: 22000,
-  name: "kbcfoundationTestnet",
+  id: 11000,
+  name: "kbcfoundation",
   iconUrl: "https://kbcfoundation.com/images/logo.png",
   iconBackground: "#fff",
   nativeCurrency: {
@@ -46,7 +46,7 @@ const kbcfoundationTestnet = {
     decimals: 18,
   },
   rpcUrls: {
-    default: { http: ["https://testnet-rpc.kbcfoundation.com"] },
+    default: { http: ["https://mainnet-rpc.kbcfoundation.com"] },
   },
   blockExplorers: {
     default: {
