@@ -66,7 +66,7 @@ export default function App({ Component, pageProps }) {
   const config = getDefaultConfig({
     appName: "My RainbowKit App",
     projectId: "YOUR_PROJECT_ID",
-    chains: [kbcfoundationTestnet],
+    chains: [kbcfoundation],
     ssr: true, // If your dApp uses server side rendering (SSR)
   });
   const queryClient = new QueryClient();
